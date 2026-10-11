@@ -16,11 +16,18 @@ const rules = [
 
 function PasswordGuide({ password }: { password: string }) {
   const passed = rules.filter(([, , test]) => test(password)).length
-  const strength = passed <= 2 ? 'Lemah' : passed < 5 ? 'Sedang' : 'Kuat'
-  const color = passed <= 2 ? 'bg-destructive' : passed < 5 ? 'bg-amber-500' : 'bg-emerald-500'
-  return <div className="rounded-xl border border-border bg-muted/30 p-3"><div className="flex items-center justify-between text-xs"><span className="font-medium">Kekuatan password</span><span className="font-semibold">{password ? strength : 'Belum diisi'}</span></div><div className="mt-2 grid grid-cols-5 gap-1" aria-label={`Kekuatan password: ${strength}`}>
-    {rules.map(([key, , test]) => <span key={key} className={`h-1.5 rounded-full ${test(password) ? color : 'bg-border'}`} />)}
-  </div><p className="mt-3 text-[11px] font-medium text-muted-foreground">Password aman harus memenuhi semua indikator:</p><ul className="mt-1 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-muted-foreground">{rules.map(([key, label, test]) => <li key={key} className={test(password) ? 'text-emerald-600' : ''}>{test(password) ? '✓' : '○'} {label}</li>)}</ul></div>
+  const level = passed <= 1 ? 1 : passed <= 3 ? 2 : passed === 4 ? 3 : 4
+  const strength = !password ? 'Belum diisi' : ['Lemah', 'Sedang', 'Kuat', 'Sangat kuat'][level - 1]
+  const color = level === 1 ? 'bg-destructive' : level === 2 ? 'bg-orange-500' : level === 3 ? 'bg-emerald-500' : 'bg-primary'
+  return <div className="rounded-xl border border-border bg-muted/30 p-3">
+    <div className="flex items-center justify-between text-xs"><span className="font-medium">Kekuatan password</span><span className="font-semibold">{strength}</span></div>
+    <div className="mt-2 grid grid-cols-4 gap-1" aria-label={`Kekuatan password: ${strength}`}>
+      {[1, 2, 3, 4].map((segment) => <span key={segment} className={`h-2 rounded-full ${segment <= level && password ? color : 'bg-border'}`} />)}
+    </div>
+    <div className="mt-2 flex justify-between text-[10px] font-medium text-muted-foreground"><span>Lemah</span><span>Sedang</span><span>Kuat</span><span>Sangat kuat</span></div>
+    <p className="mt-3 text-[11px] font-medium text-muted-foreground">Gunakan &gt;6 karakter, huruf besar-kecil, angka, dan simbol.</p>
+    <ul className="mt-1 grid grid-cols-2 gap-x-3 gap-y-1 text-[11px] text-muted-foreground">{rules.map(([key, label, test]) => <li key={key} className={test(password) ? 'text-emerald-600' : ''}>{test(password) ? '✓' : '○'} {label}</li>)}</ul>
+  </div>
 }
 
 export default function LoginPage() {

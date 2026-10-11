@@ -23,7 +23,7 @@ export default function Page() {
   const [batchName, setBatchName] = useState('')
   const lastTime = getLastTime(deeds)
   const quickTimes = useMemo(() => [nextQuarter(lastTime), nextQuarter(nextQuarter(lastTime)), nextQuarter(nextQuarter(nextQuarter(lastTime))), nextQuarter(nextQuarter(nextQuarter(nextQuarter(lastTime))))], [lastTime])
-  const displayName = session.user.name || session.user.email || 'Pengguna'
+  const displayName = session?.user?.name || session?.user?.email || 'Pengguna'
   const initials = displayName.split(' ').map((part) => part[0]).join('').slice(0, 2).toUpperCase()
 
   async function handleSignOut() {
