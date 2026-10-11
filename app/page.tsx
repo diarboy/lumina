@@ -1,7 +1,9 @@
 'use client'
 
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { useRouter } from 'next/navigation'
 import { Bell, SunMoon } from 'lucide-react'
+import { useSession } from '@/lib/auth-client'
 import { Sidebar, MobileMenuButton } from '@/components/ledger/sidebar'
 import { Dashboard, ManagementPage } from '@/components/ledger/pages'
 import { EntryModal } from '@/components/ledger/entry-modal'
@@ -9,6 +11,8 @@ import { createTodayForm, getLastTime, getNextNumber, getNextRepertorium, inferD
 import type { Deed, DeedForm, NavKey } from '@/types'
 
 export default function Page() {
+  const router = useRouter()
+  const { data: session, isPending } = useSession()
   const [dark, setDark] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
   const [activeNav, setActiveNav] = useState<NavKey>('Dashboard')
@@ -19,6 +23,14 @@ export default function Page() {
   const [batchName, setBatchName] = useState('')
   const lastTime = getLastTime(deeds)
   const quickTimes = useMemo(() => [nextQuarter(lastTime), nextQuarter(nextQuarter(lastTime)), nextQuarter(nextQuarter(nextQuarter(lastTime))), nextQuarter(nextQuarter(nextQuarter(nextQuarter(lastTime))))], [lastTime])
+
+  useEffect(() => {
+    if (!isPending && !session?.user) router.replace('/login')
+  }, [isPending, session, router])
+
+  if (isPending || !session?.user) {
+    return <main className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">{isPending ? 'Memuat sesi...' : 'Mengalihkan ke halaman login...'}</main>
+  }
 
   function openEntry(type: 'single' | 'batch') { setForm(createTodayForm(lastTime)); setBatchName(''); setModal(type) }
   function saveSingle() { if (!form.title.trim() || !form.parties.some(party => party.name.trim())) return setNotice('Judul akta dan minimal satu pihak wajib diisi.'); if (form.time <= lastTime) return setNotice(`Jam akta harus setelah pencatatan terakhir (${lastTime}).`); const next = getNextNumber(deeds); setDeeds([{ number: next, repertorium: getNextRepertorium(deeds), title: form.title.trim(), parties: form.parties.filter(p => p.name.trim()).map(p => p.qq ? `${p.name.trim()} qq ${p.qq.trim()}` : p.name.trim()).join(' • '), type: inferDeedType(form.title), time: form.time, status: 'Menunggu' }, ...deeds]); setModal(null); setNotice(`Akta ${next} berhasil dicatat. Rincian transaksi masuk antrean validasi.`) }
