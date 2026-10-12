@@ -3,7 +3,7 @@ import type { LucideIcon } from 'lucide-react'
 export type NavKey = 'Dashboard' | 'Buku Notaris' | 'Repertorium' | 'Input Batch' | 'Pengguna' | 'Audit Trail' | 'Pengaturan'
 export type DeedStatus = 'Tervalidasi' | 'Menunggu'
 export type Deed = { number: string; repertorium: string; title: string; parties: string; type: string; time: string; status: DeedStatus }
-export type Party = { name: string; qq: string }
+export type Party = { name: string; qq: string; approval: string }
 export type DeedForm = { date: string; time: string; title: string; parties: Party[] }
 export type NavItem = [NavKey, LucideIcon]
 
@@ -31,7 +31,7 @@ export const pageDescriptions: Record<NavKey, string> = {
 
 export function nextQuarter(time: string) { const [h, m] = time.split(':').map(Number); const total = h * 60 + m + 15; return `${String(Math.floor(total / 60) % 24).padStart(2, '0')}:${String(total % 60).padStart(2, '0')}` }
 export function inferDeedType(title: string) { const value = title.toLowerCase(); if (value.includes('kredit')) return 'Perjanjian Kredit'; if (value.includes('pendirian')) return 'Pendirian PT'; if (value.includes('jual beli')) return 'PPJB'; if (value.includes('fidusia')) return 'Fidusia'; return 'Lainnya' }
-export function createTodayForm(lastTime: string): DeedForm { return { date: new Date().toISOString().slice(0, 10), time: nextQuarter(lastTime), title: '', parties: [{ name: '', qq: '' }] } }
+export function createTodayForm(lastTime: string): DeedForm { return { date: new Date().toISOString().slice(0, 10), time: nextQuarter(lastTime), title: '', parties: [{ name: '', qq: '', approval: '' }] } }
 
 export const iconMap = { LayoutDashboard: 'LayoutDashboard', BookOpen: 'BookOpen', ClipboardCheck: 'ClipboardCheck', FileText: 'FileText', Users: 'Users', Activity: 'Activity', SlidersHorizontal: 'SlidersHorizontal' } as const
 export type IconName = keyof typeof iconMap
