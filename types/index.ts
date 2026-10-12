@@ -2,16 +2,16 @@ import type { LucideIcon } from 'lucide-react'
 
 export type NavKey = 'Dashboard' | 'Buku Notaris' | 'Repertorium' | 'Input Batch' | 'Pengguna' | 'Audit Trail' | 'Pengaturan'
 export type DeedStatus = 'Tervalidasi' | 'Menunggu'
-export type Deed = { number: string; repertorium: string; title: string; parties: string; type: string; time: string; status: DeedStatus }
+export type Deed = { number: string; repertorium: string; date: string; title: string; parties: string; type: string; time: string; status: DeedStatus }
 export type Party = { name: string; qq: string; approval: string }
 export type DeedForm = { date: string; time: string; title: string; parties: Party[] }
 export type NavItem = [NavKey, LucideIcon]
 
 export const initialDeeds: Deed[] = [
-  { number: '00128', repertorium: 'R-02481', title: 'Perjanjian Kredit & Jaminan Fidusia', parties: 'PT Arunika Finance • Bima Santoso', type: 'Fidusia', time: '09:15', status: 'Tervalidasi' },
-  { number: '00127', repertorium: 'R-02480', title: 'Akta Pendirian Perseroan Terbatas', parties: 'PT Langit Timur Nusantara', type: 'Pendirian PT', time: '08:45', status: 'Tervalidasi' },
-  { number: '00126', repertorium: 'R-02479', title: 'Perjanjian Pengikatan Jual Beli', parties: 'Nadia Permata • Fajar Hidayat', type: 'PPJB', time: '08:30', status: 'Tervalidasi' },
-  { number: '00125', repertorium: 'R-02478', title: 'Kuasa Membebankan Hak Tanggungan', parties: 'Bank Kencana • Rudi Hartono', type: 'SKMHT', time: '08:15', status: 'Menunggu' },
+  { number: '00128', repertorium: 'R-02481', date: '2026-10-09', title: 'Perjanjian Kredit & Jaminan Fidusia', parties: 'PT Arunika Finance • Bima Santoso', type: 'Fidusia', time: '09:15', status: 'Tervalidasi' },
+  { number: '00127', repertorium: 'R-02480', date: '2026-10-09', title: 'Akta Pendirian Perseroan Terbatas', parties: 'PT Langit Timur Nusantara', type: 'Pendirian PT', time: '08:45', status: 'Tervalidasi' },
+  { number: '00126', repertorium: 'R-02479', date: '2026-10-09', title: 'Perjanjian Pengikatan Jual Beli', parties: 'Nadia Permata • Fajar Hidayat', type: 'PPJB', time: '08:30', status: 'Tervalidasi' },
+  { number: '00125', repertorium: 'R-02478', date: '2026-10-09', title: 'Kuasa Membebankan Hak Tanggungan', parties: 'Bank Kencana • Rudi Hartono', type: 'SKMHT', time: '08:15', status: 'Menunggu' },
 ]
 
 export const navGroups = [
