@@ -32,13 +32,13 @@ export default function Page() {
     router.refresh()
   }
 
-  useEffect(() => {
-    if (!isPending && !session?.user) router.replace('/login')
-  }, [isPending, session, router])
+  // useEffect(() => {
+  //   if (!isPending && !session?.user) router.replace('/login')
+  // }, [isPending, session, router])
 
-  if (isPending || !session?.user) {
-    return <main className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">{isPending ? 'Memuat sesi...' : 'Mengalihkan ke halaman login...'}</main>
-  }
+  // if (isPending || !session?.user) {
+  //   return <main className="flex min-h-screen items-center justify-center bg-background text-sm text-muted-foreground">{isPending ? 'Memuat sesi...' : 'Mengalihkan ke halaman login...'}</main>
+  // }
 
   function openEntry(type: 'single' | 'batch') { setForm(createTodayForm(lastTime)); setBatchName(''); setModal(type) }
   function saveSingle() { if (!form.title.trim() || !form.parties.some(party => party.name.trim())) return setNotice('Judul akta dan minimal satu pihak wajib diisi.'); if (form.time <= lastTime) return setNotice(`Jam akta harus setelah pencatatan terakhir (${lastTime}).`); const next = getNextNumber(deeds); setDeeds([{ number: next, repertorium: getNextRepertorium(deeds), date: form.date, title: form.title.trim(), parties: form.parties.filter(p => p.name.trim()).map(p => p.qq ? `${p.name.trim()} qq ${p.qq.trim()}` : p.name.trim()).join(' • '), type: inferDeedType(form.title), time: form.time, status: 'Menunggu' }, ...deeds]); setModal(null); setNotice(`Akta ${next} berhasil dicatat. Rincian transaksi masuk antrean validasi.`) }
